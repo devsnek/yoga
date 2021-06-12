@@ -319,21 +319,6 @@ module.exports = (bind: any, lib: any): Yoga => {
     this.free();
   });
 
-  patch(lib.Node.prototype, 'setMeasureFunc', function(original, measureFunc) {
-    // This patch is just a convenience patch, since it helps write more
-    // idiomatic source code (such as .setMeasureFunc(null))
-    // We also automatically convert the return value of the measureFunc
-    // to a Size object, so that we can return anything that has .width and
-    // .height properties
-    if (measureFunc) {
-      return original.call(this, (...args) =>
-        Size.fromJS(measureFunc(...args)),
-      );
-    } else {
-      return this.unsetMeasureFunc();
-    }
-  });
-
   patch(lib.Node.prototype, 'calculateLayout', function(
     original,
     width = NaN,
